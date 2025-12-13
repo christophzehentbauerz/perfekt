@@ -273,6 +273,19 @@ const GLOBAL_STYLES = `
     .text-responsive-large { font-size: 3rem; }
   }
 
+  /* NEU: Mobile Optimierungen für das Values-Grid */
+  .values-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr; /* Standard: Mobile 1 Spalte (untereinander) */
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    .values-grid {
+      grid-template-columns: 1fr 1fr; /* Desktop: 2 Spalten */
+    }
+  }
+
   @media (max-width: 767px) {
     .mobile-hide { display: none; }
     .mobile-col { flex-direction: column; }
@@ -323,10 +336,15 @@ const GLOBAL_STYLES = `
   }
 
   .value-card {
-    background-color: #111; padding: 30px; border-radius: 15px; border: 1px solid #222;
+    background-color: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; /* Padding auf Mobile angepasst (20px) */
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex; flex-direction: column; justify-content: flex-start; height: 100%;
   }
+  /* Desktop Padding wieder größer */
+  @media (min-width: 768px) {
+    .value-card { padding: 30px; }
+  }
+
   .value-card:hover { transform: scale(1.05); background-color: #161616; border-color: #dc2626; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15); }
   .value-card h4 { font-weight: 900; margin-bottom: 10px; text-transform: uppercase; color: #fff; letter-spacing: 1px; }
   .value-card p { color: #c7c7c7; font-size: 0.9rem; line-height: 1.6; }
@@ -508,7 +526,6 @@ const Philosophy = () => {
         <div className="flex md-row flex-col items-center" style={{ gap: '60px' }}>
             <div style={{ flex: 1 }}>
                 <h2 className="text-red uppercase" style={{ letterSpacing: '2px', fontSize: '1rem', marginBottom: '10px' }}>Unsere DNA</h2>
-                {/* MODIFIKATION: text-responsive-large Klasse verwendet statt inline style */}
                 <h3 className="uppercase italic font-black text-responsive-large" style={{ marginBottom: '30px', lineHeight: 1, color: 'white' }}>
                     Mehr als nur <br/><span className="text-white">Gewichte heben.</span>
                 </h3>
@@ -521,7 +538,7 @@ const Philosophy = () => {
                     Egal ob du Anfänger bist oder Profi – wir holen dich dort ab, wo du stehst.
                 </p>
             </div>
-             <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+             <div style={{ flex: 1 }} className="values-grid">
                 <div className="value-card">
                     <div className="text-red" style={{ marginBottom: '15px' }}><Dumbbell size={32} /></div>
                     <h4>Ehrlich</h4>
@@ -573,15 +590,13 @@ const BentoGrid = () => {
             </div>
           </div>
            
-          {/* Card 2: Laufen */}
+          {/* Card 2: Laufen - TEXT ENTFERNT */}
           <div className="card md-span-2-row">
             <SmartImage id="laufen" className="card-img" alt="Laufen" style={{}} /> 
             <div className="card-overlay">
               <div className="text-red" style={{ marginBottom: '10px' }}><Activity size={40} /></div>
               <h4 className="uppercase italic font-black" style={{ fontSize: '2rem', margin: '0 0 10px 0', color: 'white' }}>Laufen</h4>
               <p style={{ color: '#e5e7eb', fontSize: '0.9rem', marginBottom: '10px' }}>Neben Krafttraining setzen wir bewusst auf regelmäßige Laufeinheiten.</p>
-              <p style={{ color: '#d1d5db', fontSize: '0.85rem' }}>Christoph ist die 5 km unter 20 Minuten gelaufen – mit gezielten Einheiten & Laufanalysen.</p>
-              <div style={{ marginTop: '15px', color: '#dc2626', fontWeight: 'bold', fontSize: '0.8rem' }}>👉 Sei dabei!</div>
             </div>
           </div>
            
@@ -697,7 +712,6 @@ const Contact = ({ onOpenLegal }: ContactProps) => {
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="flex md-row flex-col justify-between" style={{ gap: '60px' }}>
           <div style={{ flex: 1, maxWidth: '600px' }}>
-            {/* MODIFIKATION: text-responsive-huge Klasse verwendet statt inline style */}
             <h2 className="uppercase italic font-black text-responsive-huge" style={{ lineHeight: '0.9', marginBottom: '30px' }}>Lass uns <br/>anfangen.</h2>
             <p style={{ fontSize: '1.2rem', fontWeight: '500', marginBottom: '40px', opacity: 0.9 }}>Schreib uns einfach auf WhatsApp oder per Mail. <br/>Wir melden uns für ein unverbindliches Erstgespräch.</p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
