@@ -451,7 +451,7 @@ const Navbar = () => {
       <nav className="nav-fixed">
         <div className="container flex justify-between items-center">
           <div className="flex items-center" style={{ gap: '15px' }}>
-            <SmartImage id="logo" alt="Team Z Logo" className="logo-img" style={{ height: '35px', width: 'auto' }} />
+            {/* LOGO BILD ENTFERNT WIE GEWÜNSCHT */}
             <div className="font-black italic" style={{ fontSize: '1.5rem', color: 'white' }}>TEAM<span className="text-red">Z</span></div>
           </div>
            
