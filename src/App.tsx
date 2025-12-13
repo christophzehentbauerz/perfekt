@@ -210,13 +210,20 @@ const GLOBAL_STYLES = `
 
   * { box-sizing: border-box; }
    
-  body { 
+  /* MODIFIKATION: Fix für Mobile Zoom-Probleme */
+  html, body {
+    width: 100%;
+    overflow-x: hidden; /* Verhindert seitliches Scrollen */
     margin: 0; 
     padding: 0; 
     background-color: #000000; 
     color: #f3f4f6;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
+  }
+  
+  #root {
+    overflow-x: hidden; /* Sicherheitshalber für React Root */
   }
 
   .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
@@ -243,7 +250,10 @@ const GLOBAL_STYLES = `
    
   .grid { display: grid; gap: 20px; }
    
-  /* MODIFIKATION: Desktop Grid Verhalten */
+  /* MODIFIKATION: Responsive Textgrößen Klassen */
+  .text-responsive-huge { font-size: 2.5rem; } /* Mobile Standard */
+  .text-responsive-large { font-size: 2rem; } /* Mobile Standard */
+  
   @media (min-width: 768px) {
     .md-row { flex-direction: row !important; }
     .md-grid-2 { grid-template-columns: 1fr 1fr; }
@@ -251,32 +261,29 @@ const GLOBAL_STYLES = `
     .md-text-left { text-align: left; }
     .md-hide { display: none !important; }
     
-    /* Klassen für Desktop-Spanning (Verhindert Fehler auf Mobile) */
     .md-span-2-col { grid-column: span 2; }
     .md-span-2-row { grid-row: span 2; }
     
-    /* Fixe Höhe nur auf Desktop */
     .bento-grid { grid-auto-rows: 600px; }
     
     h1 { font-size: 7rem; line-height: 0.9; }
+    
+    /* Desktop Textgrößen */
+    .text-responsive-huge { font-size: 4rem; }
+    .text-responsive-large { font-size: 3rem; }
   }
 
-  /* MODIFIKATION: Mobile Optimierungen */
   @media (max-width: 767px) {
     .mobile-hide { display: none; }
     .mobile-col { flex-direction: column; }
     
-    /* Mobile Überschrift verkleinern, damit sie nicht überlappt */
     h1 { font-size: 3.5rem; line-height: 1.1; letter-spacing: -1px; }
     
-    /* Grid Spalten auf Mobile sicher zurücksetzen */
     .grid { grid-template-columns: 1fr; }
     
-    /* Flexible Höhe auf Mobile, damit nichts abgeschnitten wird */
     .bento-grid { grid-auto-rows: auto; }
-    .card { min-height: 450px; } /* Mindesthöhe für schöne Optik */
+    .card { min-height: 450px; } 
     
-    /* Padding oben anpassen, damit Navbar nichts verdeckt */
     .hero-content { padding-top: 80px; }
   }
 
@@ -304,13 +311,11 @@ const GLOBAL_STYLES = `
   .hero-gradient { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, black, transparent); z-index: 1; }
   .hero-content { position: relative; z-index: 10; }
    
-  /* KARTEN MIT BILD-HINTERGRUND (Original Design) */
   .card { background: #111; border: 1px solid #333; border-radius: 20px; overflow: hidden; position: relative; transition: transform 0.3s; }
   .card:hover { transform: translateY(-5px); border-color: #555; }
   .card-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; filter: grayscale(100%); }
   .card:hover .card-img { opacity: 0.8; filter: grayscale(0%); transform: scale(1.05); }
 
-  /* Overlay für Text auf Bildern */
   .card-overlay {
     position: absolute; bottom: 0; left: 0; padding: 30px; width: 100%;
     background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1));
@@ -324,7 +329,7 @@ const GLOBAL_STYLES = `
   }
   .value-card:hover { transform: scale(1.05); background-color: #161616; border-color: #dc2626; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15); }
   .value-card h4 { font-weight: 900; margin-bottom: 10px; text-transform: uppercase; color: #fff; letter-spacing: 1px; }
-  .value-card p { color: #c7c7c7; font-size: 0.9rem; line-height: 1.6; } /* Hellerer Text */
+  .value-card p { color: #c7c7c7; font-size: 0.9rem; line-height: 1.6; }
 
   .pricing-card { background: #111; border: 1px solid #333; padding: 30px; border-radius: 20px; display: flex; flex-direction: column; height: 100%; }
   .pricing-card.popular { border: 2px solid #dc2626; box-shadow: 0 0 20px rgba(220, 38, 38, 0.2); }
@@ -336,7 +341,6 @@ const GLOBAL_STYLES = `
   .btn-outline { border: 2px solid #333; color: white; background: transparent; }
   .btn-outline:hover { border-color: white; background: white; color: black; }
 
-  /* Kontakt Karten Styles */
   .contact-card {
     background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: white;
@@ -346,25 +350,21 @@ const GLOBAL_STYLES = `
   .contact-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease; }
   .contact-card:hover .contact-icon { background: #dc2626; transform: scale(1.1); }
    
-  /* Modal Styles */
   .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; justify-content: center; alignItems: center; padding: 20px; }
   .modal-content { background: #111; border: 1px solid #333; border-radius: 10px; max-width: 800px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 40px; position: relative; }
   .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; cursor: pointer; }
   .modal-content h3 { color: #dc2626; margin-top: 0; }
   .modal-content h4 { margin-top: 20px; margin-bottom: 10px; color: white; }
   .modal-content p { color: #ccc; line-height: 1.6; margin-bottom: 10px; }
-  /* Listen-Styling im Modal */
   .modal-content ul { padding-left: 20px; margin-bottom: 10px; color: #ccc; }
   .modal-content li { margin-bottom: 5px; }
 
-  /* Grund-Styling H1 (Basis, wird durch Media Queries überschrieben) */
   h1 { margin-bottom: 20px; letter-spacing: -2px; }
-  
   h2 { font-size: 1.5rem; margin-bottom: 10px; }
   h3 { font-size: 2.5rem; margin: 0; line-height: 1; }
 `;
 
-// --- INTERFACES ZUR BEHEBUNG DER TYPENFEHLER ---
+// --- INTERFACES ---
 
 interface IconProps {
   children?: React.ReactNode; 
@@ -423,7 +423,7 @@ const SmartImage = ({ id, alt, className, style }: SmartImageProps) => {
       className={className}
       style={style}
       onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-        const target = e.target as HTMLImageElement; // Expliziter Typ-Cast
+        const target = e.target as HTMLImageElement; 
         target.onerror = null; 
         target.src = config.fallback;
       }}
@@ -451,7 +451,6 @@ const Navbar = () => {
       <nav className="nav-fixed">
         <div className="container flex justify-between items-center">
           <div className="flex items-center" style={{ gap: '15px' }}>
-            {/* LOGO BILD ENTFERNT WIE GEWÜNSCHT */}
             <div className="font-black italic" style={{ fontSize: '1.5rem', color: 'white' }}>TEAM<span className="text-red">Z</span></div>
           </div>
            
@@ -481,7 +480,7 @@ const Navbar = () => {
 const Hero = () => {
   return (
     <section className="hero-section">
-      <SmartImage id="hero" className="hero-bg" alt="Gym" style={{}} /> {/* Added empty style prop to satisfy TS2741 */}
+      <SmartImage id="hero" className="hero-bg" alt="Gym" style={{}} /> 
       <div className="hero-gradient"></div>
       <div className="container hero-content">
         <h1 className="uppercase italic font-black">DEINE <span className="text-red">STÄRKE.</span><br />UNSER ZIEL.</h1>
@@ -509,7 +508,8 @@ const Philosophy = () => {
         <div className="flex md-row flex-col items-center" style={{ gap: '60px' }}>
             <div style={{ flex: 1 }}>
                 <h2 className="text-red uppercase" style={{ letterSpacing: '2px', fontSize: '1rem', marginBottom: '10px' }}>Unsere DNA</h2>
-                <h3 className="uppercase italic font-black" style={{ fontSize: '3rem', marginBottom: '30px', lineHeight: 1, color: 'white' }}>
+                {/* MODIFIKATION: text-responsive-large Klasse verwendet statt inline style */}
+                <h3 className="uppercase italic font-black text-responsive-large" style={{ marginBottom: '30px', lineHeight: 1, color: 'white' }}>
                     Mehr als nur <br/><span className="text-white">Gewichte heben.</span>
                 </h3>
                 <p style={{ color: '#d1d5db', fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '20px' }}>
@@ -561,11 +561,9 @@ const BentoGrid = () => {
           <p style={{ color: '#d1d5db', marginTop: '10px' }}>Kombiniere unsere Angebote für maximale Performance.</p>
         </div>
         
-        {/* MODIFIKATION: bento-grid Klasse hinzugefügt, inline styles für Höhe entfernt */}
         <div className="grid md-grid-3 bento-grid">
            
           {/* Card 1: Krafttraining */}
-          {/* MODIFIKATION: class md-span-2-col statt inline style */}
           <div className="card md-span-2-col">
             <SmartImage id="kraft" className="card-img" alt="Krafttraining" style={{ objectPosition: '50% 28%' }} />
             <div className="card-overlay">
@@ -576,9 +574,8 @@ const BentoGrid = () => {
           </div>
            
           {/* Card 2: Laufen */}
-          {/* MODIFIKATION: class md-span-2-row statt inline style */}
           <div className="card md-span-2-row">
-            <SmartImage id="laufen" className="card-img" alt="Laufen" style={{}} /> {/* Added empty style prop to satisfy TS2741 */}
+            <SmartImage id="laufen" className="card-img" alt="Laufen" style={{}} /> 
             <div className="card-overlay">
               <div className="text-red" style={{ marginBottom: '10px' }}><Activity size={40} /></div>
               <h4 className="uppercase italic font-black" style={{ fontSize: '2rem', margin: '0 0 10px 0', color: 'white' }}>Laufen</h4>
@@ -590,7 +587,7 @@ const BentoGrid = () => {
            
           {/* Card 3: Boxen */}
           <div className="card">
-            <SmartImage id="boxen" className="card-img" alt="Boxen" style={{}} /> {/* Added empty style prop to satisfy TS2741 */}
+            <SmartImage id="boxen" className="card-img" alt="Boxen" style={{}} /> 
             <div className="card-overlay">
               <div className="text-red" style={{ marginBottom: '10px' }}><Zap size={40} /></div>
               <h4 className="uppercase italic font-black" style={{ fontSize: '1.8rem', margin: '0 0 10px 0', color: 'white' }}>Boxen</h4>
@@ -632,7 +629,6 @@ const PricingCard = ({ title, price, period, features, popular, link }: PricingC
 );
 
 const Pricing = () => {
-  // Funktion zum Generieren des WhatsApp-Links
   const getWhatsAppLink = (paketName: string) => {
     const text = `Hallo Christoph, ich interessiere mich für das Paket: ${paketName}. Bitte melde dich bei mir.`;
     return `https://api.whatsapp.com/send/?phone=4366488599040&text=${encodeURIComponent(text)}`;
@@ -652,7 +648,7 @@ const Pricing = () => {
             period="/ Einheit" 
             features={["60-80 Min Krafttraining", "Kostenlose Körperanalyse", "Individueller Fokus", "100% Personal Training"]} 
             link={getWhatsAppLink("Einzeltraining")}
-            popular={false} // Added missing required prop
+            popular={false} 
           />
           <PricingCard 
             title="10er Block" 
@@ -660,7 +656,7 @@ const Pricing = () => {
             popular={true} 
             features={["12 Monate gültig", "Flexibel einteilbar", "Volle Flexibilität", "Ideal für Regelmäßigkeit"]} 
             link={getWhatsAppLink("10er Block")}
-            period={""} // Added missing required prop
+            period={""} 
           />
           <PricingCard 
             title="Monats-Abo" 
@@ -668,7 +664,7 @@ const Pricing = () => {
             period="/ Monat" 
             features={["1 Training pro Monat", "WhatsApp Support inkl.", "Mindestlaufzeit 1 Jahr", "Für Dranbleiber"]} 
             link={getWhatsAppLink("Monats-Abo")}
-            popular={false} // Added missing required prop
+            popular={false} 
           />
         </div>
         <div className="grid md-grid-2" style={{ gap: '30px', maxWidth: '800px', margin: '0 auto' }}>
@@ -678,7 +674,7 @@ const Pricing = () => {
             period="/ Einheit" 
             features={["60 Min im Freien", "Technik & Ausdauer", "Auch zu zweit möglich (+15€)", "Handschuhe vorhanden"]} 
             link={getWhatsAppLink("Boxen / Laufen")}
-            popular={false} // Added missing required prop
+            popular={false} 
           />
           <PricingCard 
             title="Ernährung" 
@@ -686,7 +682,7 @@ const Pricing = () => {
             period="Pauschal" 
             features={["PDF Guide & Tipps", "Support nach Absprache", "Praktische Umsetzung", "Kein Verzicht - Balance"]} 
             link={getWhatsAppLink("Ernährung")}
-            popular={false} // Added missing required prop
+            popular={false} 
           />
         </div>
       </div>
@@ -701,7 +697,8 @@ const Contact = ({ onOpenLegal }: ContactProps) => {
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="flex md-row flex-col justify-between" style={{ gap: '60px' }}>
           <div style={{ flex: 1, maxWidth: '600px' }}>
-            <h2 className="uppercase italic font-black" style={{ fontSize: '4rem', lineHeight: '0.9', marginBottom: '30px' }}>Lass uns <br/>anfangen.</h2>
+            {/* MODIFIKATION: text-responsive-huge Klasse verwendet statt inline style */}
+            <h2 className="uppercase italic font-black text-responsive-huge" style={{ lineHeight: '0.9', marginBottom: '30px' }}>Lass uns <br/>anfangen.</h2>
             <p style={{ fontSize: '1.2rem', fontWeight: '500', marginBottom: '40px', opacity: 0.9 }}>Schreib uns einfach auf WhatsApp oder per Mail. <br/>Wir melden uns für ein unverbindliches Erstgespräch.</p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
               <a href="https://api.whatsapp.com/send/?phone=4366488599040&text=Hallo+Christoph%2C+meld+dich+bitte+bei+mir+f%C3%BCr+ein+unverbindliches+Erstgespr%C3%A4ch." className="contact-card" target="_blank" rel="noopener noreferrer">
@@ -739,7 +736,7 @@ const Contact = ({ onOpenLegal }: ContactProps) => {
 };
 
 const App = () => {
-  const [modalContent, setModalContent] = useState<string | null>(null); // explizite Typisierung
+  const [modalContent, setModalContent] = useState<string | null>(null); 
 
   const openLegal = (type: keyof typeof LEGAL_TEXTS) => {
     setModalContent(LEGAL_TEXTS[type]);
