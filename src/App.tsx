@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/react';
 import { useState } from 'react';
-import React from 'react'; // Explizit für JSX-Elemente beibehalten.
+import React from 'react'; 
 
 // --- BILD KONFIGURATION ---
 const BILDER = {
@@ -211,10 +211,9 @@ const GLOBAL_STYLES = `
 
   * { box-sizing: border-box; }
    
-  /* MODIFIKATION: Fix für Mobile Zoom-Probleme */
   html, body {
     width: 100%;
-    overflow-x: hidden; /* Verhindert seitliches Scrollen */
+    overflow-x: hidden; 
     margin: 0; 
     padding: 0; 
     background-color: #000000; 
@@ -224,7 +223,7 @@ const GLOBAL_STYLES = `
   }
   
   #root {
-    overflow-x: hidden; /* Sicherheitshalber für React Root */
+    overflow-x: hidden;
   }
 
   .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
@@ -252,9 +251,21 @@ const GLOBAL_STYLES = `
   .grid { display: grid; gap: 20px; }
    
   /* MODIFIKATION: Responsive Textgrößen Klassen */
-  .text-responsive-huge { font-size: 2.5rem; } /* Mobile Standard */
-  .text-responsive-large { font-size: 2rem; } /* Mobile Standard */
+  .text-responsive-huge { font-size: 2.5rem; } 
+  .text-responsive-large { font-size: 2rem; } 
   
+  /* STYLES FÜR WERTE-KARTEN (HEADER) */
+  .value-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+  .value-header h4 {
+    margin: 0; /* Kein Abstand, da Icon daneben */
+  }
+
+  /* DESKTOP (ab 768px) */
   @media (min-width: 768px) {
     .md-row { flex-direction: row !important; }
     .md-grid-2 { grid-template-columns: 1fr 1fr; }
@@ -269,16 +280,27 @@ const GLOBAL_STYLES = `
     
     h1 { font-size: 7rem; line-height: 0.9; }
     
-    /* Desktop Textgrößen */
     .text-responsive-huge { font-size: 4rem; }
     .text-responsive-large { font-size: 3rem; }
+
+    /* Desktop Werte-Karten zurücksetzen (Icon oben) */
+    .value-header {
+        display: block;
+    }
+    .value-header .text-red {
+        margin-bottom: 15px;
+    }
+    .value-header h4 {
+        margin-bottom: 10px;
+    }
+    .value-card { padding: 30px; }
   }
 
-  /* NEU: Mobile Optimierungen für das Values-Grid */
+  /* Values Grid Layout */
   .values-grid {
     display: grid;
     gap: 20px;
-    grid-template-columns: 1fr; /* Standard: Mobile 1 Spalte (untereinander) */
+    grid-template-columns: 1fr; /* Standard: Mobile 1 Spalte */
     width: 100%;
   }
   @media (min-width: 768px) {
@@ -287,6 +309,7 @@ const GLOBAL_STYLES = `
     }
   }
 
+  /* MOBILE (unter 768px) */
   @media (max-width: 767px) {
     .mobile-hide { display: none; }
     .mobile-col { flex-direction: column; }
@@ -296,9 +319,15 @@ const GLOBAL_STYLES = `
     .grid { grid-template-columns: 1fr; }
     
     .bento-grid { grid-auto-rows: auto; }
-    .card { min-height: 450px; } 
+    
+    /* FIX: Gleiche Höhe für alle Karten am Handy */
+    .card { 
+        height: 400px; 
+        min-height: 400px; 
+    } 
     
     .hero-content { padding-top: 80px; }
+    .value-card { padding: 20px; }
   }
 
   .nav-fixed { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); padding: 15px 0; border-bottom: 1px solid #333; }
@@ -337,17 +366,13 @@ const GLOBAL_STYLES = `
   }
 
   .value-card {
-    background-color: #111; padding: 20px; border-radius: 15px; border: 1px solid #222; /* Padding auf Mobile angepasst (20px) */
+    background-color: #111; border-radius: 15px; border: 1px solid #222;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex; flex-direction: column; justify-content: flex-start; height: 100%;
   }
-  /* Desktop Padding wieder größer */
-  @media (min-width: 768px) {
-    .value-card { padding: 30px; }
-  }
 
   .value-card:hover { transform: scale(1.05); background-color: #161616; border-color: #dc2626; box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15); }
-  .value-card h4 { font-weight: 900; margin-bottom: 10px; text-transform: uppercase; color: #fff; letter-spacing: 1px; }
+  .value-card h4 { font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: 1px; }
   .value-card p { color: #c7c7c7; font-size: 0.9rem; line-height: 1.6; }
 
   .pricing-card { background: #111; border: 1px solid #333; padding: 30px; border-radius: 20px; display: flex; flex-direction: column; height: 100%; }
@@ -541,23 +566,31 @@ const Philosophy = () => {
             </div>
              <div style={{ flex: 1 }} className="values-grid">
                 <div className="value-card">
-                    <div className="text-red" style={{ marginBottom: '15px' }}><Dumbbell size={32} /></div>
-                    <h4>Ehrlich</h4>
+                    <div className="value-header">
+                        <div className="text-red"><Dumbbell size={32} /></div>
+                        <h4>Ehrlich</h4>
+                    </div>
                     <p>Kein Bullshit. Wir sagen dir, was Sache ist und wie du deine Ziele erreichst.</p>
                 </div>
                 <div className="value-card">
-                    <div className="text-red" style={{ marginBottom: '15px' }}><Activity size={32} /></div>
-                    <h4>Ausgewogen</h4>
+                    <div className="value-header">
+                        <div className="text-red"><Activity size={32} /></div>
+                        <h4>Ausgewogen</h4>
+                    </div>
                     <p>Kraft ist gut, aber Ausdauer und Gesundheit gehören für uns dazu.</p>
                 </div>
                 <div className="value-card">
-                    <div className="text-red" style={{ marginBottom: '15px' }}><Zap size={32} /></div>
-                    <h4>Leidenschaft</h4>
+                    <div className="value-header">
+                        <div className="text-red"><Zap size={32} /></div>
+                        <h4>Leidenschaft</h4>
+                    </div>
                     <p>Wir brennen für das, was wir tun. Und das wirst du im Training spüren.</p>
                 </div>
                 <div className="value-card">
-                    <div className="text-red" style={{ marginBottom: '15px' }}><CheckCircle2 size={32} /></div>
-                    <h4>Individuell</h4>
+                    <div className="value-header">
+                        <div className="text-red"><CheckCircle2 size={32} /></div>
+                        <h4>Individuell</h4>
+                    </div>
                     <p>Kein Plan von der Stange. Dein Training passt zu deinem Leben.</p>
                 </div>
              </div>
