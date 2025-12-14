@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { useState } from 'react';
 import React from 'react'; // Explizit für JSX-Elemente beibehalten.
 
@@ -590,7 +591,7 @@ const BentoGrid = () => {
             </div>
           </div>
            
-          {/* Card 2: Laufen - TEXT ENTFERNT */}
+          {/* Card 2: Laufen - TEXT IST HIER DEFINITIV ENTFERNT */}
           <div className="card md-span-2-row">
             <SmartImage id="laufen" className="card-img" alt="Laufen" style={{}} /> 
             <div className="card-overlay">
@@ -766,6 +767,10 @@ const App = () => {
       <Pricing />
       <Contact onOpenLegal={openLegal} />
       {modalContent && <Modal content={modalContent} onClose={() => setModalContent(null)} />}
+      
+      {/* HIER IST DIE ANALYTICS-KOMPONENTE EINGEFÜGT: */}
+      <Analytics />
+      
     </div>
   );
 };
