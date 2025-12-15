@@ -265,7 +265,7 @@ const GLOBAL_STYLES = `
     margin: 0; /* Kein Abstand, da Icon daneben */
   }
 
-  /* DESKTOP (ab 768px) */
+  /* DESKTOP & LAPTOP (ab 768px) */
   @media (min-width: 768px) {
     .md-row { flex-direction: row !important; }
     .md-grid-2 { grid-template-columns: 1fr 1fr; }
@@ -276,9 +276,11 @@ const GLOBAL_STYLES = `
     .md-span-2-col { grid-column: span 2; }
     .md-span-2-row { grid-row: span 2; }
     
-    .bento-grid { grid-auto-rows: 600px; }
+    /* MODIFIZIERT: Höhe für Laptops angepasst */
+    .bento-grid { grid-auto-rows: 500px; }
     
-    h1 { font-size: 7rem; line-height: 0.9; }
+    /* MODIFIZIERT: Schriftgröße für Laptops angepasst */
+    h1 { font-size: 5rem; line-height: 0.95; }
     
     .text-responsive-huge { font-size: 4rem; }
     .text-responsive-large { font-size: 3rem; }
@@ -294,6 +296,12 @@ const GLOBAL_STYLES = `
         margin-bottom: 10px;
     }
     .value-card { padding: 30px; }
+  }
+
+  /* EXTRAGROSSER DESKTOP (ab 1200px) */
+  @media (min-width: 1200px) {
+    h1 { font-size: 7rem; }
+    .bento-grid { grid-auto-rows: 600px; }
   }
 
   /* Values Grid Layout */
