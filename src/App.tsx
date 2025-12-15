@@ -26,7 +26,7 @@ const BILDER = {
   }
 };
 
-// --- RECHTLICHE TEXTE ---
+// --- RECHTLICHE TEXTE (VOLLSTÄNDIG) ---
 const LEGAL_TEXTS = {
   agb: `
     <h3>Allgemeine Geschäftsbedingungen (AGB)</h3>
@@ -213,20 +213,31 @@ const GLOBAL_STYLES = `
    
   html, body {
     width: 100%;
-    overflow-x: hidden; 
     margin: 0; 
     padding: 0; 
     background-color: #000000; 
     color: #f3f4f6;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden; /* Verhindert seitliches Scrollen */
   }
   
+  /* FIX FÜR SCHWARZEN BALKEN: Root muss 100% breit sein */
   #root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     overflow-x: hidden;
   }
 
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  /* Container breiter machen auf großen Screens */
+  .container { 
+    width: 100%;
+    max-width: 1400px; /* Breiter für große Laptops */
+    margin: 0 auto; 
+    padding: 0 20px; 
+  }
    
   /* ROTER FARBTON */
   .text-red { color: #dc2626; }
@@ -250,7 +261,7 @@ const GLOBAL_STYLES = `
    
   .grid { display: grid; gap: 20px; }
    
-  /* MODIFIKATION: Responsive Textgrößen Klassen */
+  /* TEXTGRÖSSEN RESPONSIVE */
   .text-responsive-huge { font-size: 2.5rem; } 
   .text-responsive-large { font-size: 2rem; } 
   
@@ -262,10 +273,10 @@ const GLOBAL_STYLES = `
     margin-bottom: 10px;
   }
   .value-header h4 {
-    margin: 0; /* Kein Abstand, da Icon daneben */
+    margin: 0;
   }
 
-  /* DESKTOP & LAPTOP (ab 768px) */
+  /* --- DESKTOP / LAPTOP STYLES (ab 768px) --- */
   @media (min-width: 768px) {
     .md-row { flex-direction: row !important; }
     .md-grid-2 { grid-template-columns: 1fr 1fr; }
@@ -276,48 +287,44 @@ const GLOBAL_STYLES = `
     .md-span-2-col { grid-column: span 2; }
     .md-span-2-row { grid-row: span 2; }
     
-    /* MODIFIZIERT: Höhe für Laptops angepasst */
+    /* Optimierung für Laptops (nicht zu riesig) */
     .bento-grid { grid-auto-rows: 500px; }
     
-    /* MODIFIZIERT: Schriftgröße für Laptops angepasst */
+    /* Schriftgröße für Laptops anpassen */
     h1 { font-size: 5rem; line-height: 0.95; }
     
     .text-responsive-huge { font-size: 4rem; }
     .text-responsive-large { font-size: 3rem; }
 
-    /* Desktop Werte-Karten zurücksetzen (Icon oben) */
-    .value-header {
-        display: block;
-    }
-    .value-header .text-red {
-        margin-bottom: 15px;
-    }
-    .value-header h4 {
-        margin-bottom: 10px;
-    }
+    /* Werte-Karten am PC: Icon oben */
+    .value-header { display: block; }
+    .value-header .text-red { margin-bottom: 15px; }
+    .value-header h4 { margin-bottom: 10px; }
     .value-card { padding: 30px; }
+    
+    /* Navigation breiter verteilen */
+    .nav-gap-wide { gap: 3rem; }
   }
 
-  /* EXTRAGROSSER DESKTOP (ab 1200px) */
-  @media (min-width: 1200px) {
+  /* --- EXTRA GROSSE BILDSCHIRME (ab 1440px) --- */
+  @media (min-width: 1440px) {
     h1 { font-size: 7rem; }
     .bento-grid { grid-auto-rows: 600px; }
+    .container { max-width: 1600px; }
   }
 
   /* Values Grid Layout */
   .values-grid {
     display: grid;
     gap: 20px;
-    grid-template-columns: 1fr; /* Standard: Mobile 1 Spalte */
+    grid-template-columns: 1fr; 
     width: 100%;
   }
   @media (min-width: 768px) {
-    .values-grid {
-      grid-template-columns: 1fr 1fr; /* Desktop: 2 Spalten */
-    }
+    .values-grid { grid-template-columns: 1fr 1fr; }
   }
 
-  /* MOBILE (unter 768px) */
+  /* --- MOBILE STYLES (unter 768px) --- */
   @media (max-width: 767px) {
     .mobile-hide { display: none; }
     .mobile-col { flex-direction: column; }
@@ -325,20 +332,21 @@ const GLOBAL_STYLES = `
     h1 { font-size: 3.5rem; line-height: 1.1; letter-spacing: -1px; }
     
     .grid { grid-template-columns: 1fr; }
-    
     .bento-grid { grid-auto-rows: auto; }
     
     /* FIX: Gleiche Höhe für alle Karten am Handy */
-    .card { 
-        height: 400px; 
-        min-height: 400px; 
-    } 
+    .card { height: 400px; min-height: 400px; } 
     
     .hero-content { padding-top: 80px; }
     .value-card { padding: 20px; }
   }
 
-  .nav-fixed { position: fixed; top: 0; left: 0; width: 100%; z-index: 100; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); padding: 15px 0; border-bottom: 1px solid #333; }
+  .nav-fixed { 
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 100; 
+    background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); 
+    padding: 20px 0; /* Mehr Platz oben/unten */
+    border-bottom: 1px solid #333; 
+  }
    
   .nav-link { 
     color: #e5e7eb; text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s ease; 
@@ -346,21 +354,14 @@ const GLOBAL_STYLES = `
   .nav-link:hover { color: #dc2626; }
 
   .nav-highlight {
-    color: #dc2626;
-    border: 1px solid #dc2626;
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
+    color: #dc2626; border: 1px solid #dc2626; padding: 8px 16px; border-radius: 4px; transition: all 0.3s ease;
   }
-  .nav-highlight:hover {
-    background-color: #dc2626;
-    color: white;
-  }
+  .nav-highlight:hover { background-color: #dc2626; color: white; }
 
-  .hero-section { position: relative; height: 100vh; min-height: 600px; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; z-index: 0; }
+  .hero-section { position: relative; height: 100vh; min-height: 600px; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; z-index: 0; width: 100%; }
   .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; z-index: 0; filter: grayscale(100%); }
   .hero-gradient { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, black, transparent); z-index: 1; }
-  .hero-content { position: relative; z-index: 10; }
+  .hero-content { position: relative; z-index: 10; width: 100%; }
    
   .card { background: #111; border: 1px solid #333; border-radius: 20px; overflow: hidden; position: relative; transition: transform 0.3s; }
   .card:hover { transform: translateY(-5px); border-color: #555; }
@@ -506,8 +507,8 @@ const Navbar = () => {
             <div className="font-black italic" style={{ fontSize: '1.5rem', color: 'white' }}>TEAM<span className="text-red">Z</span></div>
           </div>
            
-          <div className="mobile-hide flex gap-8 items-center">
-            <a href="#warum-wir" className="nav-link nav-highlight" style={{ border: '1px solid #dc2626', padding: '5px 15px', borderRadius: '5px' }}>Warum wir</a> 
+          <div className="mobile-hide flex gap-8 items-center nav-gap-wide"> 
+            <a href="#warum-wir" className="nav-link nav-highlight">Warum wir</a> 
             {['Training', 'Preise', 'Kontakt'].map((item: string) => (
               <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="nav-link">{item}</a>
             ))}
@@ -612,12 +613,10 @@ const BentoGrid = () => {
   return (
     <section id="training" style={{ padding: '100px 0', background: 'black' }}>
       <div className="container">
-        <div className="flex md-row flex-col justify-between items-end" style={{ marginBottom: '60px' }}>
-          <div>
-            <h2 className="text-red uppercase" style={{ letterSpacing: '2px', fontSize: '1rem' }}>Disziplinen</h2>
-            <h3 className="uppercase italic font-black" style={{ color: 'white' }}>Wähle deinen Weg</h3>
-          </div>
-          <p style={{ color: '#d1d5db', marginTop: '10px' }}>Kombiniere unsere Angebote für maximale Performance.</p>
+        <div style={{ marginBottom: '60px' }}>
+          <h2 className="text-red uppercase" style={{ letterSpacing: '2px', fontSize: '1rem' }}>Disziplinen</h2>
+          <h3 className="uppercase italic font-black" style={{ color: 'white', marginBottom: '10px' }}>Wähle deinen Weg</h3>
+          <p style={{ color: '#d1d5db', margin: 0 }}>Kombiniere unsere Angebote für maximale Performance.</p>
         </div>
         
         <div className="grid md-grid-3 bento-grid">
@@ -626,18 +625,22 @@ const BentoGrid = () => {
           <div className="card md-span-2-col">
             <SmartImage id="kraft" className="card-img" alt="Krafttraining" style={{ objectPosition: '50% 28%' }} />
             <div className="card-overlay">
-              <div className="text-red" style={{ marginBottom: '10px' }}><Dumbbell size={40} /></div>
-              <h4 className="uppercase italic font-black" style={{ fontSize: '2rem', margin: '0 0 10px 0', color: 'white' }}>Krafttraining</h4>
+              <h4 className="uppercase italic font-black flex items-center gap-4" style={{ fontSize: '2rem', margin: '0 0 10px 0', color: 'white' }}>
+                <span className="text-red"><Dumbbell size={40} /></span>
+                Krafttraining
+              </h4>
               <p style={{ color: '#e5e7eb', fontSize: '1rem', lineHeight: '1.5' }}>Individuelle Pläne, Technik-Check und messbare Fortschritte. Wir bauen das Fundament für deinen Körper.</p>
             </div>
           </div>
            
-          {/* Card 2: Laufen - TEXT IST HIER DEFINITIV ENTFERNT */}
+          {/* Card 2: Laufen */}
           <div className="card md-span-2-row">
             <SmartImage id="laufen" className="card-img" alt="Laufen" style={{}} /> 
             <div className="card-overlay">
-              <div className="text-red" style={{ marginBottom: '10px' }}><Activity size={40} /></div>
-              <h4 className="uppercase italic font-black" style={{ fontSize: '2rem', margin: '0 0 10px 0', color: 'white' }}>Laufen</h4>
+              <h4 className="uppercase italic font-black flex items-center gap-4" style={{ fontSize: '2rem', margin: '0 0 10px 0', color: 'white' }}>
+                <span className="text-red"><Activity size={40} /></span>
+                Laufen
+              </h4>
               <p style={{ color: '#e5e7eb', fontSize: '0.9rem', marginBottom: '10px' }}>Neben Krafttraining setzen wir bewusst auf regelmäßige Laufeinheiten.</p>
             </div>
           </div>
@@ -646,8 +649,10 @@ const BentoGrid = () => {
           <div className="card">
             <SmartImage id="boxen" className="card-img" alt="Boxen" style={{}} /> 
             <div className="card-overlay">
-              <div className="text-red" style={{ marginBottom: '10px' }}><Zap size={40} /></div>
-              <h4 className="uppercase italic font-black" style={{ fontSize: '1.8rem', margin: '0 0 10px 0', color: 'white' }}>Boxen</h4>
+              <h4 className="uppercase italic font-black flex items-center gap-4" style={{ fontSize: '1.8rem', margin: '0 0 10px 0', color: 'white' }}>
+                <span className="text-red"><Zap size={40} /></span>
+                Boxen
+              </h4>
               <p style={{ color: '#e5e7eb', fontSize: '0.9rem' }}>Klassisches Boxen, kleine Sparrings und Elemente aus dem MMA.</p>
             </div>
           </div>
