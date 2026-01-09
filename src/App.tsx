@@ -219,10 +219,9 @@ const GLOBAL_STYLES = `
     color: #f3f4f6;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden; /* Verhindert seitliches Scrollen */
+    overflow-x: hidden;
   }
   
-  /* FIX FÜR SCHWARZEN BALKEN: Root muss 100% breit sein */
   #root {
     width: 100%;
     min-height: 100vh;
@@ -231,15 +230,13 @@ const GLOBAL_STYLES = `
     overflow-x: hidden;
   }
 
-  /* Container breiter machen auf großen Screens */
   .container { 
     width: 100%;
-    max-width: 1400px; /* Breiter für große Laptops */
+    max-width: 1400px; 
     margin: 0 auto; 
     padding: 0 20px; 
   }
    
-  /* ROTER FARBTON */
   .text-red { color: #dc2626; }
   .bg-red { background-color: #dc2626; color: white; }
   .bg-dark { background-color: #111; }
@@ -261,11 +258,9 @@ const GLOBAL_STYLES = `
    
   .grid { display: grid; gap: 20px; }
    
-  /* TEXTGRÖSSEN RESPONSIVE */
   .text-responsive-huge { font-size: 2.5rem; } 
   .text-responsive-large { font-size: 2rem; } 
   
-  /* STYLES FÜR WERTE-KARTEN (HEADER) */
   .value-header {
     display: flex;
     align-items: center;
@@ -276,7 +271,41 @@ const GLOBAL_STYLES = `
     margin: 0;
   }
 
-  /* --- DESKTOP / LAPTOP STYLES (ab 768px) --- */
+  /* --- CARD OVERLAY OPTIMIERUNG --- */
+  .card-overlay {
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%;
+    /* Stärkerer Gradient für bessere Lesbarkeit auf dem Handy */
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 50%, rgba(0,0,0,0) 100%);
+    z-index: 2;
+    padding: 20px;
+  }
+
+  /* RESPONSIVE SCHRIFTGRÖSSEN FÜR KARTEN-TITEL */
+  .card-title {
+    font-size: 1.5rem; 
+    margin: 0 0 8px 0;
+    color: white;
+    text-transform: uppercase;
+    font-style: italic;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  }
+
+  .card-description {
+     color: #e5e7eb; 
+     font-size: 0.9rem; 
+     line-height: 1.4;
+     text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+  }
+
+  /* --- DESKTOP STYLES --- */
   @media (min-width: 768px) {
     .md-row { flex-direction: row !important; }
     .md-grid-2 { grid-template-columns: 1fr 1fr; }
@@ -287,33 +316,42 @@ const GLOBAL_STYLES = `
     .md-span-2-col { grid-column: span 2; }
     .md-span-2-row { grid-row: span 2; }
     
-    /* Optimierung für Laptops (nicht zu riesig) */
     .bento-grid { grid-auto-rows: 500px; }
     
-    /* Schriftgröße für Laptops anpassen */
     h1 { font-size: 5rem; line-height: 0.95; }
     
     .text-responsive-huge { font-size: 4rem; }
     .text-responsive-large { font-size: 3rem; }
 
-    /* Werte-Karten am PC: Icon oben */
     .value-header { display: block; }
     .value-header .text-red { margin-bottom: 15px; }
     .value-header h4 { margin-bottom: 10px; }
     .value-card { padding: 30px; }
     
-    /* Navigation breiter verteilen */
     .nav-gap-wide { gap: 3rem; }
+
+    /* Desktop Overlay und Schrift */
+    .card-overlay {
+      padding: 30px;
+      background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1));
+    }
+    .card-title {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      gap: 1rem;
+    }
+    .card-description {
+      font-size: 1rem; 
+      line-height: 1.5;
+    }
   }
 
-  /* --- EXTRA GROSSE BILDSCHIRME (ab 1440px) --- */
   @media (min-width: 1440px) {
     h1 { font-size: 7rem; }
     .bento-grid { grid-auto-rows: 600px; }
     .container { max-width: 1600px; }
   }
 
-  /* Values Grid Layout */
   .values-grid {
     display: grid;
     gap: 20px;
@@ -324,7 +362,7 @@ const GLOBAL_STYLES = `
     .values-grid { grid-template-columns: 1fr 1fr; }
   }
 
-  /* --- MOBILE STYLES (unter 768px) --- */
+  /* --- MOBILE SPECIFICS --- */
   @media (max-width: 767px) {
     .mobile-hide { display: none; }
     .mobile-col { flex-direction: column; }
@@ -334,7 +372,6 @@ const GLOBAL_STYLES = `
     .grid { grid-template-columns: 1fr; }
     .bento-grid { grid-auto-rows: auto; }
     
-    /* FIX: Gleiche Höhe für alle Karten am Handy */
     .card { height: 400px; min-height: 400px; } 
     
     .hero-content { padding-top: 80px; }
@@ -344,7 +381,7 @@ const GLOBAL_STYLES = `
   .nav-fixed { 
     position: fixed; top: 0; left: 0; width: 100%; z-index: 100; 
     background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); 
-    padding: 20px 0; /* Mehr Platz oben/unten */
+    padding: 20px 0; 
     border-bottom: 1px solid #333; 
   }
    
@@ -367,12 +404,6 @@ const GLOBAL_STYLES = `
   .card:hover { transform: translateY(-5px); border-color: #555; }
   .card-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; filter: grayscale(100%); }
   .card:hover .card-img { opacity: 0.8; filter: grayscale(0%); transform: scale(1.05); }
-
-  .card-overlay {
-    position: absolute; bottom: 0; left: 0; padding: 30px; width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.1));
-    z-index: 2;
-  }
 
   .value-card {
     background-color: #111; border-radius: 15px; border: 1px solid #222;
@@ -499,12 +530,24 @@ const Modal = ({ content, onClose }: ModalProps) => {
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setIsOpen(false);
+  };
+
   return (
     <>
       <nav className="nav-fixed">
         <div className="container flex justify-between items-center">
           <div className="flex items-center" style={{ gap: '15px' }}>
-            <div className="font-black italic" style={{ fontSize: '1.5rem', color: 'white' }}>TEAM<span className="text-red">Z</span></div>
+            <button 
+              onClick={scrollToTop}
+              className="font-black italic" 
+              style={{ fontSize: '1.5rem', color: 'white', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
+            >
+              TEAM<span className="text-red">Z</span>
+            </button>
           </div>
            
           <div className="mobile-hide flex gap-8 items-center nav-gap-wide"> 
@@ -625,11 +668,11 @@ const BentoGrid = () => {
           <div className="card md-span-2-col">
             <SmartImage id="kraft" className="card-img" alt="Krafttraining" style={{ objectPosition: '50% 28%' }} />
             <div className="card-overlay">
-              <h4 className="uppercase italic font-black flex items-center gap-4" style={{ fontSize: '2rem', margin: '0 0 10px 0', color: 'white' }}>
-                <span className="text-red"><Dumbbell size={40} /></span>
+              <h4 className="card-title">
+                <span className="text-red"><Dumbbell size={32} /></span>
                 Krafttraining
               </h4>
-              <p style={{ color: '#e5e7eb', fontSize: '1rem', lineHeight: '1.5' }}>Individuelle Pläne, Technik-Check und messbare Fortschritte. Wir bauen das Fundament für deinen Körper.</p>
+              <p className="card-description">Individuelle Pläne, Technik-Check und messbare Fortschritte. Wir bauen das Fundament für deinen Körper.</p>
             </div>
           </div>
            
@@ -637,11 +680,11 @@ const BentoGrid = () => {
           <div className="card md-span-2-row">
             <SmartImage id="laufen" className="card-img" alt="Laufen" style={{}} /> 
             <div className="card-overlay">
-              <h4 className="uppercase italic font-black flex items-center gap-4" style={{ fontSize: '2rem', margin: '0 0 10px 0', color: 'white' }}>
-                <span className="text-red"><Activity size={40} /></span>
+              <h4 className="card-title">
+                <span className="text-red"><Activity size={32} /></span>
                 Laufen
               </h4>
-              <p style={{ color: '#e5e7eb', fontSize: '0.9rem', marginBottom: '10px' }}>Neben Krafttraining setzen wir bewusst auf regelmäßige Laufeinheiten.</p>
+              <p className="card-description" style={{marginBottom: '10px'}}>Neben Krafttraining setzen wir bewusst auf regelmäßige Laufeinheiten.</p>
             </div>
           </div>
            
@@ -649,11 +692,11 @@ const BentoGrid = () => {
           <div className="card">
             <SmartImage id="boxen" className="card-img" alt="Boxen" style={{}} /> 
             <div className="card-overlay">
-              <h4 className="uppercase italic font-black flex items-center gap-4" style={{ fontSize: '1.8rem', margin: '0 0 10px 0', color: 'white' }}>
-                <span className="text-red"><Zap size={40} /></span>
+              <h4 className="card-title">
+                <span className="text-red"><Zap size={32} /></span>
                 Boxen
               </h4>
-              <p style={{ color: '#e5e7eb', fontSize: '0.9rem' }}>Klassisches Boxen, kleine Sparrings und Elemente aus dem MMA.</p>
+              <p className="card-description">Klassisches Boxen, kleine Sparrings und Elemente aus dem MMA.</p>
             </div>
           </div>
            
