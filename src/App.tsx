@@ -5,11 +5,11 @@ import React from 'react';
 // --- BILD KONFIGURATION ---
 const BILDER = {
   logo: {
-    src: "/logo.png", 
+    src: "/logo.jpg",
     fallback: "https://via.placeholder.com/150x150/000000/ffffff?text=Z"
   },
   hero: {
-    src: "/hero.jpg",
+    src: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
     fallback: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
   },
   kraft: {
